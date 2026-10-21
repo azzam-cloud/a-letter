@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A quiet night</title>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0f24;--box:#12162e;--line:#c9b98a;--txt:#f1e8d0;--btn:#2b3566;--gold:#f2b632;--rose:#ffb3c6}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--txt);font-family:'VT323',monospace;overflow:hidden}
+#app{height:100%;display:flex;flex-direction:column;padding:env(safe-area-inset-top,0) 10px env(safe-area-inset-bottom,0);max-width:520px;margin:0 auto}
+.top{display:flex;justify-content:space-between;align-items:center;padding:12px 2px 10px}
+.chapter{font-family:'Press Start 2P',monospace;font-size:10px;color:var(--gold)}
+.mu{font-family:'Press Start 2P',monospace;font-size:9px;padding:6px 8px;background:none;color:var(--gold);border:2px solid var(--gold);box-shadow:none;display:none}
+.backBtn{position:absolute;left:12px;bottom:6px;font-family:'Press Start 2P',monospace;font-size:8px;padding:5px 7px;background:none;color:var(--rose);border:2px solid var(--rose);display:none;z-index:2}
+.stage{position:relative;flex:0 0 33%;min-height:175px;border:4px solid var(--line);overflow:hidden;background:linear-gradient(#0b1030,#1a2350 60%,#27326a)}
+.stage>*{position:absolute}
+.star{width:2px;height:2px;background:#dfe6ff;animation:tw 3s steps(2) infinite}
+@keyframes tw{50%{opacity:.2}}
+.moon{top:12px;right:16%;width:22px;height:22px;border-radius:50%;box-shadow:inset -7px 0 0 #efe6c4}
+.kos{left:0;bottom:30%;width:27%;height:50%;background:#1b2142;border-top:5px solid #0e1230}
+.kos b{position:absolute;top:-17px;left:8px;font:7px 'Press Start 2P',monospace;color:#9aa3d6}
+.win{position:absolute;width:24%;height:16%;background:#2a3166}
+.lit{background:#f5c96a;box-shadow:0 0 10px #f5c96a}
+.house{bottom:30%;background:#1a2040;clip-path:polygon(0 38%,50% 0,100% 38%,100% 100%,0 100%)}
+.ground{left:0;right:0;bottom:0;height:30%;background:#162033;border-top:3px solid #0d1424}
+.road{left:0;right:0;bottom:0;height:13%;background:#262c44}
+.glow{left:calc(50% - 90px);width:230px;top:14%;bottom:0;background:radial-gradient(ellipse at 61% 0,rgba(247,217,138,.3),transparent 68%);animation:fl 5s steps(1) infinite}
+@keyframes fl{0%,90%,100%{opacity:1}93%{opacity:.55}96%{opacity:.9}}
+.pole{left:calc(50% + 110px);bottom:24%;width:5px;height:60%;background:#0c0f1e}
+.lamp{left:calc(50% + 100px);top:23%;width:24px;height:8px;background:#f7d98a;box-shadow:0 0 14px #f7d98a}
+.bench{left:calc(50% - 120px);bottom:21%;width:216px;height:8px;background:#6a4528;border-bottom:4px solid #3d2714}
+.back{left:calc(50% - 120px);bottom:calc(21% + 8px);width:216px;height:4px;background:#4d321d;transform:translateY(-34px)}
+.sp{bottom:calc(21% + 10px);line-height:0;user-select:none;transition:opacity .3s}
+#him{left:calc(50% - 88px);filter:drop-shadow(0 0 2px rgba(247,217,138,.45))}
+#her{left:calc(50% + 12px);transform:scaleX(-1)}
+.sp.talking{animation:duckTalk .55s steps(2) infinite}
+#her.talking{animation:duckTalkHer .55s steps(2) infinite}
+@keyframes duckTalk{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+@keyframes duckTalkHer{0%,100%{transform:scaleX(-1) translateY(0)}50%{transform:scaleX(-1) translateY(-2px)}}
+.sp.shy,.pt.shy{animation:duckShy 1.8s steps(4) infinite}
+.sp.listening,.pt.listening{animation:duckListen 1.4s steps(3) infinite}
+.sp.happy,.pt.happy{animation:duckHappy .7s steps(2) infinite}
+@keyframes duckShy{0%,100%{transform:translateX(0) rotateY(0)}45%,70%{transform:translateX(-5px) rotateY(18deg)}}
+@keyframes duckListen{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-1px) rotate(-2deg)}}
+@keyframes duckHappy{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+#her.listening,#her.happy{animation-name:duckListenHer}
+@keyframes duckListenHer{0%,100%{transform:scaleX(-1) translateY(0) rotate(0)}50%{transform:scaleX(-1) translateY(-1px) rotate(2deg)}}
+.dim{opacity:.5}
+#guard{left:-70px;bottom:4%;transition:left 3.2s steps(16)}
+#cat{left:112%;bottom:7%;transition:left 2.2s steps(12)}
+.motor{position:absolute;left:-13px;bottom:-7px;width:58px;height:18px;background:#263b68;border:3px solid #11182e;z-index:0}
+.motor:before,.motor:after{content:"";position:absolute;bottom:-10px;width:13px;height:13px;border:3px solid #11182e;border-radius:50%;background:#68718e}
+.motor:before{left:2px}.motor:after{right:2px}
+.motor i{position:absolute;left:25px;top:-13px;width:4px;height:13px;background:#11182e;transform:rotate(20deg)}
+.resetting #guard,.resetting #cat{transition:none!important}
+#fade{position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;z-index:20;transition:opacity .65s ease}
+#fade.on{opacity:1;pointer-events:auto}
+.beam{left:38px;top:26px;width:90px;height:34px;background:linear-gradient(90deg,rgba(255,244,170,.6),transparent);clip-path:polygon(0 40%,100% 0,100% 100%,0 60%)}
+.hearts{inset:0;pointer-events:none}
+.hearts span{position:absolute;bottom:35%;font-size:20px;animation:up 3s linear infinite;opacity:0}
+@keyframes up{0%{opacity:0;transform:translateY(0)}20%{opacity:1}100%{opacity:0;transform:translateY(-80px)}}
+.box{flex:1;margin:10px 0 12px;background:var(--box);border:4px solid var(--line);box-shadow:0 5px 0 #0008;padding:12px;position:relative;display:flex;gap:10px;cursor:pointer;min-height:0;overflow:hidden}
+.pt{flex:0 0 66px;height:66px;border:3px solid var(--line);background:#0b1030;display:flex;align-items:center;justify-content:center;font-size:30px;line-height:0}
+.col{flex:1;display:flex;flex-direction:column;min-width:0}
+.name{font-family:'Press Start 2P',monospace;font-size:10px;margin-bottom:8px;color:var(--txt)}
+.name[data-s="Ms. Quack"]{color:var(--rose)}
+.name[data-s="Narrator"]{color:#9aa3d6}
+.name[data-s="Pak Satpam"]{color:#7fc2ff}
+.name[data-s="Cat"]{color:#e4cf7a}
+.body{flex:1;overflow-y:auto;min-height:0;padding-bottom:18px}
+.text{font-size:22px;line-height:1.12;white-space:pre-wrap}
+.choices{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.next{position:absolute;right:12px;bottom:6px;font-family:'Press Start 2P',monospace;font-size:12px;color:var(--rose);animation:blink .8s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.bar{position:absolute;left:0;top:0;width:100%;max-width:100%;height:4px;background:var(--gold);transform-origin:left;transform:scaleX(0);transition:transform .4s}
+button{font-family:'VT323',monospace;font-size:21px;line-height:1.1;text-align:left;padding:9px 11px;background:var(--btn);color:var(--txt);border:3px solid var(--line);box-shadow:0 4px 0 #0008;cursor:pointer}
+button small{display:block;font-size:17px;color:var(--gold)}
+button:active{transform:translateY(3px);box-shadow:0 1px 0 #0008}
+button:focus-visible,.box:focus-visible{outline:3px solid var(--rose);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="top"><div class="chapter">◆ CHAPTER I: THE PARK</div><button class="mu" id="mu">♪ ON</button></div>
+  <div class="stage" id="stage" aria-hidden="true">
+    <div class="moon"></div>
+    <div class="kos" id="kos"><b>KOS</b></div>
+    <div class="ground"></div><div class="road"></div>
+    <div class="glow"></div><div class="pole"></div><div class="lamp"></div>
+    <div class="bench"></div><div class="back"></div>
+    <div class="sp" id="him"></div>
+    <div class="sp" id="her"></div>
+    <div class="sp" id="cat"></div>
+    <div class="sp" id="guard"><div class="motor"><i></i></div></div>
+    <div class="hearts" id="hearts"></div>
+  </div>
+  <div class="box" id="box" tabindex="0" role="button" aria-label="Next">
+    <div class="bar" id="bar"></div>
+    <button class="backBtn" id="backBtn">BACK</button>
+    <div class="pt" id="pt"></div>
+    <div class="col">
+      <div class="name" id="name"></div>
+      <div class="body" id="body"><div class="text" id="text" aria-live="polite"></div><div class="choices" id="choices"></div></div>
+    </div>
+    <div class="next" id="next">▼</div>
+  </div>
+  <div id="fade" aria-hidden="true"></div>
+</div>
+<script>
+/* ---------- pixel sprites ---------- */
+const DK=["....RBBB......","...BBBBBB.....","...BBBBEBOO...","...BBBBBBOOO..","...BBBBBBOO...","....BBBBB.....","....BBBB......","..BBBBBBBB....",".BBBLLLLBBB...","BBBBLLLLLBBB..","BBBBLLLLBBBB..",".BBBBBBBBBB...","..BBBBBBBB....","....FF..FF...."];
+const CAT=["..C......C..","..CC....CC..","..CCCCCCCC..","..CCECCECC..","..CCCPPCCC..","...CCCCCC...","..CCCLLCCC..",".CCCCLLCCCC.",".CCCCLLCCCCT",".CCCCCCCCCC.","..CC....CC.."];
+const GD=["...KKKK...","..KKKKKK..","..SSSSSS..","..SDSSDS..","...SSSS...","..UUUUUU..",".UUUUUUUU.",".UUUUUUUUF",".UUUUUUUU.","..UUUUUU..","..UUUUUU..","..TT..TT..","..TT..TT..","..TT..TT..","..BB..BB.."];
+const P={
+ q:{B:"#2d2d3b",L:"#4a4a5e",E:"#f3f3f3",O:"#f0a23a",F:"#e0892b",R:"#2d2d3b"},
+ h:{B:"#f6f3ec",L:"#cfd2dc",E:"#2a2a33",O:"#f0a23a",F:"#e0892b",R:"#e0607e"},
+ c:{C:"#8e8fa0",L:"#c9cad6",E:"#f3d34a",P:"#e79ab0",T:"#8e8fa0"},
+ g:{K:"#243b6b",S:"#e0b48a",D:"#2a1a12",U:"#2f4f86",T:"#243b6b",F:"#fff2a8",B:"#161616"}
+};
+function spr(g,p,s,vb){
+  const v=(vb||`0 0 ${g[0].length} ${g.length}`).split(' ').map(Number);let r='';
+  g.forEach((row,y)=>[...row].forEach((c,x)=>{if(p[c])r+=`<rect x="${x}" y="${y}" width="1.02" height="1.02" fill="${p[c]}"/>`}));
+  return `<svg width="${v[2]*s}" height="${v[3]*s}" viewBox="${v.join(' ')}" shape-rendering="crispEdges">${r}</svg>`;
+}
+const $=id=>document.getElementById(id);
+$('him').innerHTML=spr(DK,P.q,4);$('her').innerHTML=spr(DK,P.h,4);
+$('cat').innerHTML=spr(CAT,P.c,4);
+$('guard').innerHTML=spr(GD,P.g,4)+'<div class="beam"></div><div class="motor"><i></i></div>';
+const Q="Mr. Quack",H="Ms. Quack",N="Narrator",G="Pak Satpam",K="Cat";
+const POR={[Q]:()=>spr(DK,P.q,6,"2 -1 10 10"),[H]:()=>spr(DK,P.h,6,"2 -1 10 10"),[K]:()=>spr(CAT,P.c,5,"0 -0.5 12 12"),[G]:()=>spr(GD,P.g,6,"0 -1 10 10")};
+/* ---------- scene setup ---------- */
+const stage=$('stage');
+for(let i=0;i<26;i++){const s=document.createElement('div');s.className='star';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*52+'%';s.style.animationDelay=(Math.random()*3)+'s';stage.prepend(s)}
+[[8,0],[8,1],[8,2],[8,3],[8,4],[8,5]].forEach(()=>{});
+for(let r=0;r<3;r++)for(let c=0;c<2;c++){const w=document.createElement('div');w.className='win'+(r===1&&c===1?' lit':'');w.style.left=(16+c*44)+'%';w.style.top=(14+r*28)+'%';$('kos').appendChild(w)}
+[[33,13,16],[50,10,20],[65,14,17],[80,10,15]].forEach(([x,w,h])=>{const d=document.createElement('div');d.className='house';d.style.cssText=`position:absolute;left:${x}%;width:${w}%;height:${h}%`;stage.insertBefore(d,$('kos'))});
+/* ---------- story ---------- */
+const L=(w,t,h)=>({w,t,h});
+const SIL="(says nothing, just listens)",SILN="Ms. Quack says nothing, just listens.";
+const say=(l,re,tag)=>({l,tag,a:[L(H,l),L(Q,re)]});
+const sil=(re)=>({l:SIL,a:[L(N,SILN),L(Q,re)]});
+const song=(l,k)=>({l,fn:()=>playSong(k),a:[L(H,"this one."),L(N,"♪ Now playing: "+l),L(Q,"good choice.")]});
+const M=[
+L(N,"Night in the housing complex. Quiet, except for the crickets.\nUnder the street lamp in front of her boarding house, two ducks sit on the bench. Like always."),
+L(N,"Mr. Quack has something to say. He has been practicing it all day, and it still isn't coming out right."),
+L(Q,"heidy... before i say anything, do u wanna put some music on?"),
+{c:[song("Indecision (feat. Daniel Caesar)","indecision"),song("All I Need to Hear (The 1975)","all-i-need-to-hear"),song("I Thought I Saw Your Face Today (She & Him)","face-today"),
+ {l:"no music, just the quiet",a:[L(H,"no music. just this."),L(Q,"okay. just us and the night, then.")]}]},
+L(Q,"hey heidy, there's actually something i've been wanting to tell u for a while, but honestly, i don't really know how to say it."),
+{c:[say("what?","okay okay, let me try to say it properly. give me a sec.","(in Heidy's tone)"),say("uh oh. should i be worried?","no no, nothing bad. i think. i hope."),sil("...okay. i'll just say it, then.")]},
+L(Q,"i never planned to like u this much. i don't even know when it started getting this deep. at first, i guess i just enjoyed talking to u and spending time with u."),
+L(Q,"but somewhere along the way, i started looking forward to seeing u, getting excited whenever we got to spend time together, and thinking about u even when we're not around each other."),
+{c:[say("i'm listening.","thank u. i'll try not to ramble."),say("take your time.","thank u. that actually helps."),sil("thanks for letting me say it all.")]},
+L(Q,"and honestly, i didn't expect any of this. i tried to keep it to myself and not think too much about it, but here i am, still feeling the same way, maybe even more than before."),
+L(Q,"i like u, heidy. and i don't really know how to explain it.",1),
+{c:[say("...okay.","yeah. i know that was a lot all at once."),say("i'm still here.","i know. that's the only reason i can keep going."),sil("...i'll keep going, then.")]},
+L(N,"Footsteps. A flashlight sweeps across the street.\nThe security guard is doing his rounds."),
+{ev:"guardIn",d:3400},
+L(G,"Malam, Non. Masih di luar?"),
+{c:[{l:"malam, pak.",a:[L(H,"malam, Pak."),L(Q,"Malam, Pak. Kami bentar lagi kok."),L(G,"Iya, santai aja. Jangan pulang terlalu malam.")]},{l:"iya pak, sebentar lagi.",a:[L(H,"iya, Pak. Sebentar lagi."),L(Q,"Pak, kalau saya dipanggil Tuan Muda boleh nggak?"),L(H,"(ketawa kecil) jangan mulai."),L(G,"Tuan muda apaan, Dek? Hahaha. Ya sudah, saya lanjut ronda dulu.")]},{l:SIL,a:[L(N,"Ms. Quack just nods politely. Mr. Quack gives the guard a small wave."),L(Q,"Malam, Pak."),L(H,"(pelan) Tuan Muda banget."),L(Q,"biarin. kedengarannya keren."),L(G,"Hahaha. Ya sudah, Non. Dek. Jangan kemalaman.")]}]},
+L(N,"The guard walks on, flashlight swinging along the fence."),
+{ev:"guardOut",d:600},
+L(N,"Mr. Quack lets out a breath he'd been holding."),
+L(Q,"...okay. where was i."),
+L(Q,"it's not like i think you're perfect or anything. i know u have ur own problems, ur own thoughts, and things that u might not always be comfortable sharing with other people. i don't know everything about u either, but from what i've gotten to know, i just find myself wanting to know u more."),
+L(Q,"sometimes i wish i could tell u that it's okay to not have everything figured out. u don't always have to be okay, and u don't always have to know what to do. i know i can't fix everything that's bothering u, but if there's ever a time when u need someone to listen, i'd genuinely want to be there for u."),
+{c:[say("that's kind of what i needed to hear.","then i'm really glad i said it."),say("you don't have to be so nice to me, you know.","i'm not being nice. i just mean it."),sil("...u don't have to say anything.")]},
+L(Q,"and i think that's what confuses me sometimes. i don't just like u because u make me happy. i care about how you're doing, whether things are going well for u, and whether you're okay even when u don't really talk about it. i find myself wishing good things for u, even when those things have nothing to do with me."),
+L(Q,"i know there's someone u like, and i understand that. i'm not gonna ask u to change how u feel, and i don't want u to feel bad just because i like u. u have ur own feelings, and i respect that. i guess i just want to be honest with u instead of keeping everything to myself."),
+{c:[say("i appreciate you being honest.","honest is the only way i know how to do this."),say("i don't want this to make things awkward.","it doesn't have to be. we can still sit here like always."),sil("...i'd rather say it than carry it.")]},
+L(Q,"of course, a part of me wishes u could feel the same way about me. i'd be lying if i said i never thought about what it would be like if things were different between us. but i also know that just because i feel this way doesn't mean u have to feel the same."),
+L(Q,"i'm still trying to figure out what to do with these feelings, honestly. sometimes i wanna keep getting closer to u, but sometimes i get scared too. i don't know if i'm hoping for something that could actually happen or if i'm just getting too attached. and i guess that's something i have to figure out myself."),
+{c:[say("honestly, i'm not sure what to say.","that's okay. u don't have to say anything yet."),say("are you okay?","kinda scared. but okay. better now that it's out."),sil("...thank u for staying.")]},
+L(N,"Something soft brushes past the bench.\nA stray cat has wandered over."),
+{ev:"catIn",d:2400},
+{w:K,t:"meow.",fn:playMiaw},
+{c:[say("hi, little one.","it likes u. most things do, honestly."),{l:"(pets the cat)",a:[L(N,"Ms. Quack pets the cat. It leans into her hand and purrs."),L(Q,"it picked a good moment. should i be jealous?"),L(H,"of a cat? really?"),L(Q,"i'm just asking important questions.")]},{l:"(offers a hand)",a:[L(H,"come here, little one."),L(N,"The cat sniffs Mr. Quack's hand, then settles between them."),L(Q,"oh. so we're friends now."),L(H,"looks like it.")]},{l:SIL,a:[L(N,"Neither of them says anything for a while. The cat purrs between them."),L(Q,"...i think the cat is listening too."),L(H,"maybe it understands more than we do.")]}]},
+L(Q,"but one thing i know is that i'm really glad i got to know u."),
+L(Q,"there have been times when i had a lot on my mind, things i didn't really tell anyone about, and spending time with u made me forget about them for a while. even if we were just talking about random stuff or doing nothing special, i enjoyed it. maybe u didn't think much of those moments, but i did. they meant something to me, and i think that's part of why u've become this important to me.",1),
+L(Q,"before this year ends, i just want u to know that i'm genuinely happy i met u. i hope things get better for u, especially the things you've been struggling with. i hope u get to do the things u want, reach the goals you're working towards, and find more reasons to be happy with yourself. and if there are times when u doubt yourself, i hope u don't forget that there's still so much about u worth being proud of."),
+{c:[say("thank you for wishing that for me.","of course. it's the easiest wish i've ever made."),say("(sniffles) it's just the wind.","it's a very emotional wind then."),sil("i mean every word of it.")]},
+L(Q,"i don't know what will happen with these feelings. maybe they'll fade eventually, or maybe things will turn out differently than i expect. i really don't know. i'm not gonna promise that i'll wait forever, because i don't even know what the future holds. i just know that right now, i like u, and i care about u more than i probably know how to explain."),
+L(Q,"i'm not telling u all of this because i want an answer from u right away. i just wanted u to know, because keeping it all to myself has been difficult too."),
+L(Q,"and whatever happens, i hope life treats u well, heidy. i hope u find the things that make u happy, and i hope that even on the days when things get hard, u'll be okay."),
+L(Q,"i guess that's all i wanted to say. i don't really know what happens after this, but at least now u know.",1),
+{c:[say("i need some time to think about it.","take all the time u need. no rush, really. i'll still be here being a normal duck."),say("thank you for telling me. that took guts.","it took like, all my guts. but i'm glad i did."),sil("...can we just stay here a bit longer?")]},
+L(N,"The street lamp hums. Far off, the guard's flashlight turns around the corner.\nTwo ducks, one bench, and nobody has to say anything else."),
+{c:[{l:"Play again",end:1,a:[]}]}
+];
+/* ---------- engine ---------- */
+const him=$('him'),her=$('her'),box=$('box'),txt=$('text'),nm=$('name'),ch=$('choices'),nx=$('next'),bar=$('bar'),hearts=$('hearts'),body=$('body'),pt=$('pt'),mu=$('mu'),fade=$('fade'),backBtn=$('backBtn');
+let queue=[],cur=null,timer=null,typing=false,busy=false,done_=0,aud=null,typingAudio=null,history=[];
+const EV={
+ guardIn(){$('guard').style.left='calc(50% - 150px)'},
+ guardOut(){$('guard').style.left='112%'},
+ catIn(){$('cat').style.left='calc(50% - 30px)'}
+};
+const SONGS={
+  "indecision":"song/Indecision.mp3",
+  "all-i-need-to-hear":"song/All i need to hear.mp3",
+  "face-today":"song/I Thought I Saw Your Face Today.mp3"
+};
+function playSong(k){
+  if(aud)aud.pause();
+  aud=new Audio(SONGS[k]);aud.loop=true;aud.volume=.55;
+  aud.addEventListener('error',()=>{mu.textContent='♪ ✖'});
+  aud.play().catch(()=>{});
+  mu.style.display='block';mu.textContent='♪ ON';
+}
+mu.onclick=e=>{e.stopPropagation();if(!aud)return;aud.muted=!aud.muted;mu.textContent=aud.muted?'♪ OFF':'♪ ON'};
+function playMiaw(){
+  const meow=new Audio('song/miaw.mp3');
+  meow.volume=.42;
+  meow.play().catch(()=>{});
+}
+function start(){
+  if(aud){aud.pause();aud=null}mu.style.display='none';
+  stage.classList.add('resetting');
+  $('guard').style.left='-70px';$('cat').style.left='112%';
+  requestAnimationFrame(()=>stage.classList.remove('resetting'));
+  queue=M.map(x=>({...x,m:1}));done_=0;busy=false;next();
+  history=[];backBtn.style.display='none';
+}
+function restartWithFade(){
+  busy=true;fade.classList.add('on');
+  const oldAud=aud,started=performance.now();
+  const fadeAudio=()=>{const p=Math.min(1,(performance.now()-started)/650);if(oldAud)oldAud.volume=.55*(1-p);if(p<1)requestAnimationFrame(fadeAudio)};
+  fadeAudio();
+  setTimeout(()=>{start();requestAnimationFrame(()=>fade.classList.remove('on'))},700);
+}
+function next(){
+  if(busy||!queue.length)return;
+  if(cur&&!cur.ev)history.push({item:cur,rest:[...queue],done:done_});
+  cur=queue.shift();clearInterval(timer);
+  backBtn.style.display=history.length?'inline-block':'none';
+  if(cur.m)done_++;
+  bar.style.transform="scaleX("+(done_/M.length)+")";
+  if(cur.ev){EV[cur.ev]();busy=true;nx.style.display="none";setTimeout(()=>{busy=false;next()},cur.d||0);return}
+  txt.textContent="";ch.innerHTML="";nx.style.display="none";
+  if(cur.c){
+    setWho(H);txt.textContent=cur.c[0].end?"":"Choose Ms. Quack's reply:";
+    typing=false;
+    cur.c.forEach(o=>{
+      const b=document.createElement('button');b.textContent=o.l;
+      if(o.tag){const s=document.createElement('small');s.textContent=o.tag;b.appendChild(s)}
+      b.onclick=e=>{e.stopPropagation();if(o.end){restartWithFade();return}
+        if(o.fn)o.fn();queue.unshift(...o.a.map(x=>({...x})));next()};
+      ch.appendChild(b);
+    });
+  }else{
+    setWho(cur.w);if(cur.fn)cur.fn();if(cur.h)burst();typeIt(cur.t);
+  }
+}
+function goBack(){
+  if(!history.length||busy)return;
+  clearInterval(timer);typing=false;
+  const previous=history.pop();
+  queue=[previous.item,...previous.rest];cur=null;done_=previous.done;
+  bar.style.transform="scaleX("+(done_/M.length)+")";
+  backBtn.style.display=history.length?'inline-block':'none';
+  next();
+}
+backBtn.onclick=e=>{e.stopPropagation();goBack()};
+function setWho(w){
+  nm.textContent=w;nm.dataset.s=w;
+  pt.innerHTML=POR[w]?POR[w]():"🌙";
+  him.classList.toggle('dim',w===H);her.classList.toggle('dim',w===Q);
+  him.classList.remove('talking');her.classList.remove('talking');
+  him.classList.remove('shy','listening','happy');her.classList.remove('shy','listening','happy');
+  pt.classList.remove('shy','listening','happy');
+}
+function typeTick(){
+  if(!typingAudio)return;
+  const o=typingAudio.createOscillator(),g=typingAudio.createGain();
+  o.type='square';o.frequency.value=720+Math.random()*90;
+  g.gain.setValueAtTime(.0001,typingAudio.currentTime);
+  g.gain.exponentialRampToValueAtTime(.012,typingAudio.currentTime+.003);
+  g.gain.exponentialRampToValueAtTime(.0001,typingAudio.currentTime+.035);
+  o.connect(g).connect(typingAudio.destination);o.start();o.stop(typingAudio.currentTime+.04);
+}
+function typeIt(t){
+  typing=true;let k=0;
+  if(cur.w===Q)him.classList.add('talking');if(cur.w===H)her.classList.add('talking');
+  const expression=cur.w===Q&&cur.h?'shy':cur.w===H?'listening':'happy';
+  if(cur.w===Q){him.classList.add(expression);pt.classList.add(expression)}
+  if(cur.w===H){her.classList.add(expression);pt.classList.add(expression)}
+  if(!typingAudio){try{typingAudio=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}
+  if(typingAudio&&typingAudio.state==='suspended')typingAudio.resume().catch(()=>{});
+  timer=setInterval(()=>{k++;txt.textContent=t.slice(0,k);body.scrollTop=body.scrollHeight;if(k%2===0)typeTick();if(k>=t.length)finish()},22);
+}
+function finish(){clearInterval(timer);typing=false;him.classList.remove('talking');her.classList.remove('talking');if(cur.t)txt.textContent=cur.t;nx.style.display="block"}
+function burst(){
+  for(let j=0;j<6;j++){const h=document.createElement('span');h.textContent=j%2?"💛":"❤️";
+    h.style.left=(35+Math.random()*30)+"%";h.style.animationDelay=(j*.3)+"s";hearts.appendChild(h);setTimeout(()=>h.remove(),3600)}
+}
+function advance(){if(busy)return;if(typing){finish();return}if(cur&&cur.c)return;next()}
+box.addEventListener('click',advance);
+box.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();advance()}});
+start();
+</script>
+</body>
+</html>
