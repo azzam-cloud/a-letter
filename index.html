@@ -134,6 +134,7 @@ const P={
  c:{C:"#8e8fa0",L:"#c9cad6",E:"#f3d34a",P:"#e79ab0",T:"#8e8fa0"},
  g:{K:"#243b6b",S:"#e0b48a",D:"#2a1a12",U:"#2f4f86",T:"#243b6b",F:"#fff2a8",B:"#161616"}
 };
+const PD={B:"#2f4f86",L:"#7fc2ff",E:"#f3d34a",O:"#f0a23a",F:"#e0892b",R:"#243b6b"};
 function spr(g,p,s,vb){
   const v=(vb||`0 0 ${g[0].length} ${g.length}`).split(' ').map(Number);let r='';
   g.forEach((row,y)=>[...row].forEach((c,x)=>{if(p[c])r+=`<rect x="${x}" y="${y}" width="1.02" height="1.02" fill="${p[c]}"/>`}));
@@ -142,9 +143,9 @@ function spr(g,p,s,vb){
 const $=id=>document.getElementById(id);
 $('him').innerHTML=spr(DK,P.q,4);$('her').innerHTML=spr(DK,P.h,4);
 $('cat').innerHTML=spr(CAT,P.c,4);
-$('guard').innerHTML=spr(GD,P.g,4)+'<div class="beam"></div><div class="motor"><i></i></div>';
+$('guard').innerHTML=spr(DK,PD,4)+'<div class="beam"></div><div class="motor"><i></i></div>';
 const Q="Mr. Quack",H="Ms. Quack",N="Narrator",G="Pak Satpam",K="Cat";
-const POR={[Q]:()=>spr(DK,P.q,6,"2 -1 10 10"),[H]:()=>spr(DK,P.h,6,"2 -1 10 10"),[K]:()=>spr(CAT,P.c,5,"0 -0.5 12 12"),[G]:()=>spr(GD,P.g,6,"0 -1 10 10")};
+const POR={[Q]:()=>spr(DK,P.q,6,"2 -1 10 10"),[H]:()=>spr(DK,P.h,6,"2 -1 10 10"),[K]:()=>spr(CAT,P.c,5,"0 -0.5 12 12"),[G]:()=>spr(DK,PD,6,"2 -1 10 10")};
 /* ---------- scene setup ---------- */
 const stage=$('stage');
 for(let i=0;i<26;i++){const s=document.createElement('div');s.className='star';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*52+'%';s.style.animationDelay=(Math.random()*3)+'s';stage.prepend(s)}
