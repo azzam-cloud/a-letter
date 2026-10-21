@@ -56,6 +56,9 @@ html,body{height:100%;margin:0;background:var(--bg);color:var(--txt);font-family
 @keyframes duckListenHer{0%,100%{transform:scaleX(-1) translateY(0) rotate(0)}50%{transform:scaleX(-1) translateY(-1px) rotate(2deg)}}
 .dim{opacity:.5}
 #guard{left:-70px;bottom:4%;transition:left 3.2s steps(16)}
+#guard:before,.pt.guardPortrait:before{content:"";position:absolute;left:3px;top:-9px;width:31px;height:8px;background:#172b55;border:3px solid #0b1228;z-index:3}
+#guard:after,.pt.guardPortrait:after{content:"";position:absolute;left:-3px;top:-1px;width:43px;height:4px;background:#172b55;border:2px solid #0b1228;z-index:3}
+.pt.guardPortrait{position:relative}
 #cat{left:112%;bottom:7%;transition:left 2.2s steps(12)}
 .motor{position:absolute;left:-13px;bottom:-7px;width:58px;height:18px;background:#263b68;border:3px solid #11182e;z-index:0}
 .motor:before,.motor:after{content:"";position:absolute;bottom:-10px;width:13px;height:13px;border:3px solid #11182e;border-radius:50%;background:#68718e}
@@ -74,7 +77,7 @@ html,body{height:100%;margin:0;background:var(--bg);color:var(--txt);font-family
 .name{font-family:'Press Start 2P',monospace;font-size:10px;margin-bottom:8px;color:var(--txt)}
 .name[data-s="Ms. Quack"]{color:var(--rose)}
 .name[data-s="Narrator"]{color:#9aa3d6}
-.name[data-s="Pak Satpam"]{color:#7fc2ff}
+.name[data-s="Duck Security Guard"]{color:#7fc2ff}
 .name[data-s="Cat"]{color:#e4cf7a}
 .body{flex:1;overflow-y:auto;min-height:0;padding-bottom:18px}
 .text{font-size:22px;line-height:1.12;white-space:pre-wrap}
@@ -144,7 +147,7 @@ const $=id=>document.getElementById(id);
 $('him').innerHTML=spr(DK,P.q,4);$('her').innerHTML=spr(DK,P.h,4);
 $('cat').innerHTML=spr(CAT,P.c,4);
 $('guard').innerHTML=spr(DK,PD,4)+'<div class="beam"></div><div class="motor"><i></i></div>';
-const Q="Mr. Quack",H="Ms. Quack",N="Narrator",G="Pak Satpam",K="Cat";
+const Q="Mr. Quack",H="Ms. Quack",N="Narrator",G="Duck Security Guard",K="Cat";
 const POR={[Q]:()=>spr(DK,P.q,6,"2 -1 10 10"),[H]:()=>spr(DK,P.h,6,"2 -1 10 10"),[K]:()=>spr(CAT,P.c,5,"0 -0.5 12 12"),[G]:()=>spr(DK,PD,6,"2 -1 10 10")};
 /* ---------- scene setup ---------- */
 const stage=$('stage');
@@ -283,6 +286,7 @@ backBtn.onclick=e=>{e.stopPropagation();goBack()};
 function setWho(w){
   nm.textContent=w;nm.dataset.s=w;
   pt.innerHTML=POR[w]?POR[w]():"🌙";
+  pt.classList.toggle('guardPortrait',w===G);
   him.classList.toggle('dim',w===H);her.classList.toggle('dim',w===Q);
   him.classList.remove('talking');her.classList.remove('talking');
   him.classList.remove('shy','listening','happy');her.classList.remove('shy','listening','happy');
