@@ -158,7 +158,7 @@ const say=(l,re,tag)=>({l,tag,a:[L(H,l),L(Q,re)]});
 const sil=(re)=>({l:SIL,a:[L(N,SILN),L(Q,re)]});
 const song=(l,k)=>({l,fn:()=>playSong(k),a:[L(H,"this one."),L(N,"♪ Now playing: "+l),L(Q,"good choice.")]});
 const songChoices=[song("Indecision (feat. Daniel Caesar)","indecision"),song("All I Need to Hear (The 1975)","all-i-need-to-hear"),song("I Thought I Saw Your Face Today (She & Him)","face-today")];
-const musicChoices=[...songChoices,{l:"no music, just the quiet",a:[L(H,"no music. just the quiet."),L(Q,"okay... i respect that."),L(H,"you sound disappointed."),L(Q,"i'm not disappointed. i'm just saying this scene has very strong soundtrack energy."),L(H,"then choose one yourself."),L(Q,"wait, i thought you were choosing."),L(H,"nope. your turn."),{c:[...songChoices]}]}];
+const musicChoices=[...songChoices,{l:"no music, just the quiet",a:[L(H,"no music. just the quiet."),L(Q,"yaaah... no soundtrack? brave choice."),L(H,"you'll live."),L(Q,"i guess. but if this gets awkward, i'm blaming the silence."),L(H,"then choose one yourself."),L(Q,"wait, i'm choosing?"),L(H,"yep. your turn."),{c:[...songChoices]}]}];
 const M=[
 L(N,"Night in the housing complex. Quiet, except for the crickets.\nUnder the street lamp in front of her boarding house, two ducks sit on the bench. Like always."),
 L(N,"Mr. Quack has something to say. He has been practicing it all day, and it still isn't coming out right."),
