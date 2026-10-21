@@ -157,12 +157,13 @@ const SIL="(says nothing, just listens)",SILN="Ms. Quack says nothing, just list
 const say=(l,re,tag)=>({l,tag,a:[L(H,l),L(Q,re)]});
 const sil=(re)=>({l:SIL,a:[L(N,SILN),L(Q,re)]});
 const song=(l,k)=>({l,fn:()=>playSong(k),a:[L(H,"this one."),L(N,"♪ Now playing: "+l),L(Q,"good choice.")]});
+const songChoices=[song("Indecision (feat. Daniel Caesar)","indecision"),song("All I Need to Hear (The 1975)","all-i-need-to-hear"),song("I Thought I Saw Your Face Today (She & Him)","face-today")];
+const musicChoices=[...songChoices,{l:"no music, just the quiet",a:[L(H,"no music. just the quiet."),L(Q,"okay... i respect that."),L(H,"you sound disappointed."),L(Q,"i'm not disappointed. i'm just saying this scene has very strong soundtrack energy."),L(H,"then choose one yourself."),L(Q,"wait, i thought you were choosing."),L(H,"nope. your turn."),{c:[...songChoices]}]}];
 const M=[
 L(N,"Night in the housing complex. Quiet, except for the crickets.\nUnder the street lamp in front of her boarding house, two ducks sit on the bench. Like always."),
 L(N,"Mr. Quack has something to say. He has been practicing it all day, and it still isn't coming out right."),
 L(Q,"heidy... before i say anything, do u wanna put some music on?"),
-{c:[song("Indecision (feat. Daniel Caesar)","indecision"),song("All I Need to Hear (The 1975)","all-i-need-to-hear"),song("I Thought I Saw Your Face Today (She & Him)","face-today"),
- {l:"no music, just the quiet",a:[L(H,"no music. just this."),L(Q,"okay. just us and the night, then.")]}]},
+{c:[...musicChoices]},
 L(Q,"hey heidy, there's actually something i've been wanting to tell u for a while, but honestly, i don't really know how to say it."),
 {c:[say("what?","okay okay, let me try to say it properly. give me a sec.","(in Heidy's tone)"),say("uh oh. should i be worried?","no no, nothing bad. i think. i hope."),sil("...okay. i'll just say it, then.")]},
 L(Q,"i never planned to like u this much. i don't even know when it started getting this deep. at first, i guess i just enjoyed talking to u and spending time with u."),
